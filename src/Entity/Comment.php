@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CommentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use DateTimeImmutable;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
@@ -19,6 +20,8 @@ class Comment
     private ?int $rating = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Veuillez détailler votre réponse')]
+    #[Assert\Length(min: 100, minMessage: 'Votre réponse est trop courte')]
     private ?string $content = null;
 
     #[ORM\Column]
@@ -28,8 +31,8 @@ class Comment
     #[ORM\JoinColumn(nullable: false)]
     private ?Question $question = null;
 
-   
-    function __construct()
+
+    public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
     }
@@ -89,7 +92,7 @@ class Comment
         return $this;
     }
 
-   
 
-    
+
+
 }

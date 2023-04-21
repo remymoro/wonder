@@ -10,6 +10,7 @@
 {% block body %}
 <div class="block">
   <div class="d-flex flex-row-nowrap">
+   {% include "partials/_rating.html.twig" with { rating: question.rating } %}
     <div class="d-flex flex-column">
       <div class="d-flex flex-row-nowrap align-items-center pb-30">
         <h3 class="mr-10">{{ question.title }}</h3>

@@ -1,0 +1,6 @@
+ <div class="d-flex flex-column mr-20 align-items-center">
+          <i class="fa-solid fa-arrow-up {{ question.rating > 0 ? 'rating-up' : '' }}"></i>
+          <p class="text-small {{ question.rating > 0 ? 'rating-up' : question.rating < 0 ? 'rating-down' : ''}}"
+          > {{ question.rating }}</p>
+          <i class="fa-solid fa-arrow-down {{ question.rating < 0 ? 'rating-down' : '' }}"></i>
+        </div>
