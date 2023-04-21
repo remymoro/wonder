@@ -284,6 +284,20 @@ small {
   min-width: 200px;
 }
 
+
+/* flash */
+
+.flash {
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+}
+
+.flash-success {
+  background-color: var(--success);
+}
+
+
 /* header */
 
 header {
@@ -309,6 +323,8 @@ header {
 .header-logo img {
   max-width: 150px;
 }
+
+
 
 /* footer */
 
