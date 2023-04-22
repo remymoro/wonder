@@ -1,7 +1,6 @@
 <?php
+
 namespace App\Controller;
-
-
 
 use App\Entity\User;
 use App\Form\UserType;
@@ -18,7 +17,7 @@ use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 class SecurityController extends AbstractController
 {
     public function __construct(
-       private FormLoginAuthenticator $authenticator
+        private FormLoginAuthenticator $authenticator
     ) {
 
     }
@@ -28,9 +27,8 @@ class SecurityController extends AbstractController
         Request $request,
         EntityManagerInterface $em,
         UserPasswordHasherInterface $passwordHasher,
-        UserAuthenticatorInterface $userAuthenticator
-    ) :Response
-    {
+        UserAuthenticatorInterface $userAuthenticator,
+    ): Response {
         $user =  new User();
         $userForm = $this->createForm(UserType::class, $user);
         $userForm->handleRequest($request);
@@ -51,19 +49,17 @@ class SecurityController extends AbstractController
     }
 
    #[Route('/login', name:'login')]
-   public function login
-   ( AuthenticationUtils $authenticationUtils
+   public function login(
+       AuthenticationUtils $authenticationUtils
+   ): Response {
 
-   ):Response
-   {
+       if($this->getUser()) {
+           return  $this->redirectToRoute('home');
+       }
+       $error = $authenticationUtils->getLastAuthenticationError();
+       $lastUsername = $authenticationUtils->getLastUsername();
 
-    if($this->getUser()){
-       return  $this->redirectToRoute('home');
-    }
-    $error = $authenticationUtils->getLastAuthenticationError();
-    $lastUsername = $authenticationUtils->getLastUsername();
-
-    return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+       return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
 
 
    }

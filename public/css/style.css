@@ -428,3 +428,7 @@ footer {
   width: 150px;
   border-radius: var(--border-radius);
 }
+
+textarea {
+  resize: none;
+}

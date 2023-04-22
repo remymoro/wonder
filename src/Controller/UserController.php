@@ -16,7 +16,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class UserController extends AbstractController
 {
     #[Route('/user/{id}', name:'user')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
     public function profileUser(User $user)
     {
 
@@ -40,7 +40,7 @@ class UserController extends AbstractController
 
 
     #[Route('/user', name: 'current_user')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function currentUserProfile(
         Request $request,
         EntityManagerInterface $em,
