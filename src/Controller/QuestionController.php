@@ -2,22 +2,24 @@
 
 namespace App\Controller;
 
+use App\Entity\Vote;
 use App\Entity\Comment;
 use App\Entity\Question;
-use App\Entity\Vote;
 use App\Form\CommentType;
 use App\Form\QuestionType;
-use App\Repository\QuestionRepository;
 use App\Repository\VoteRepository;
+use App\Repository\QuestionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class QuestionController extends AbstractController
 {
     #[Route('/question/ask', name: 'question_form')]
+    #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
     public function index(
         Request $request,
         EntityManagerInterface $em
@@ -77,7 +79,10 @@ class QuestionController extends AbstractController
         return $this->render('question/show.html.twig', $options);
     }
 
+    
+
     #[Route('/question/rating/{id}/{score}', name:'question_rating')]
+    #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
     public function questionRating(
         Question $question,
         EntityManagerInterface $em,
@@ -129,6 +134,7 @@ class QuestionController extends AbstractController
 
 
     #[Route('/comment/rating/{id}/{score}', name:'comment_rating')]
+    #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
     public function commentRating(
         Comment $comment,
         EntityManagerInterface $em,
