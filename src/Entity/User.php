@@ -37,7 +37,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Veuillez renseigner votre prénom.')]
     private ?string $firstname = null;
-    
+
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Veuillez renseigner votre nom.')]
     private ?string $lastname = null;
@@ -52,6 +52,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
+
+
+
+    #[Assert\Length(min: 6, minMessage: 'Le mot de passe doit faire au moins 6 caractères.')]
+    private ?string $newPassword ;
+
+
 
     public function __construct()
     {
@@ -225,6 +232,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
+
+    public function getFullName(): ?string
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
+
+
    
-    
+
+    /**
+     * Get the value of newPassword
+     */ 
+    public function getNewPassword(): ?string
+    {
+        return $this->newPassword;
+    }
+
+    /**
+     * Set the value of newPassword
+     *
+     * @return  self
+     */ 
+    public function setNewPassword(string $newPassword) :self
+    {
+        $this->newPassword = $newPassword;
+
+        return $this;
+    }
 }

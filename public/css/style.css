@@ -417,3 +417,14 @@ footer {
 .avatar-lg {
   width: 40px;
 }
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+/* user profile */
+
+.profile-picture {
+  width: 150px;
+  border-radius: var(--border-radius);
+}
