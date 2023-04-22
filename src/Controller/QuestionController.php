@@ -52,9 +52,9 @@ class QuestionController extends AbstractController
     ): Response {
 
         $options = ['question'=>$question];
-        
+
         $user = $this->getUser();
-        if($user){
+        if($user) {
             $comment = new Comment();
             $commentForm = $this->createForm(CommentType::class, $comment);
             $commentForm->handleRequest($request);
@@ -73,7 +73,7 @@ class QuestionController extends AbstractController
         }
 
 
-        return $this->render('question/show.html.twig',$options);
+        return $this->render('question/show.html.twig', $options);
     }
 
 
