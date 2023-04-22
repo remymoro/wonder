@@ -20,24 +20,16 @@ class UserController extends AbstractController
     public function profileUser(User $user)
     {
 
-
         $currentUser =$this->getUser();
         if($currentUser == $user) {
 
             return $this->redirectToRoute('current_user');
 
         }
-
-
         return $this->render('user/show.html.twig', [
             'user' => $user
         ]);
-
-
     }
-
-
-
 
     #[Route('/user', name: 'current_user')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -74,9 +66,5 @@ class UserController extends AbstractController
             'form' => $userForm->createView()
         ]);
     }
-
-
-
-
 
 }

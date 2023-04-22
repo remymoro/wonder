@@ -7,12 +7,12 @@ use App\Entity\Question;
 use App\Entity\Vote;
 use App\Form\CommentType;
 use App\Form\QuestionType;
+use App\Repository\QuestionRepository;
 use App\Repository\VoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class QuestionController extends AbstractController
@@ -47,10 +47,11 @@ class QuestionController extends AbstractController
     #[Route('/question/{id}', name: 'question_show')]
     public function show(
         Request $request,
-        Question $question,
-        EntityManagerInterface $em
+        QuestionRepository $questionRepo,
+        EntityManagerInterface $em,
+        int $id
     ): Response {
-
+        $question = $questionRepo->findOneByIdWithCommentsAndAuthor($id);
         $options = ['question'=>$question];
 
         $user = $this->getUser();
@@ -126,7 +127,7 @@ class QuestionController extends AbstractController
 
 
 
-    
+
     #[Route('/comment/rating/{id}/{score}', name:'comment_rating')]
     public function commentRating(
         Comment $comment,
@@ -171,16 +172,5 @@ class QuestionController extends AbstractController
         return  $referer ? $this->redirect($referer) : $this->redirectToRoute('home');
 
     }
-    
+
 }
-
-
-
-
-
-
-
-
-
-
-

@@ -41,8 +41,32 @@ class QuestionRepository extends ServiceEntityRepository
 
 
 
-    public function getlastQuestionWithAuthor()
+    public function findLatestQuestionsWithAuthors()
     {
-        
+        return $this->createQueryBuilder('q')
+          ->leftJoin('q.author', 'a')
+          ->addSelect('a')
+          ->orderBy('q.createdAt', 'DESC')
+          ->getQuery()
+          ->getResult();
+    }
+
+
+
+
+
+    public function findOneByIdWithCommentsAndAuthor(string $id): ?Question
+    {
+        return $this->createQueryBuilder('q')
+          ->andWhere('q.id = :id')
+          ->setParameter('id', $id)
+          ->leftJoin('q.author', 'a')
+          ->addSelect('a')
+          ->leftJoin('q.comments', 'c')
+          ->addSelect('c')
+          ->leftJoin('c.author', 'ca')
+          ->addSelect('ca')
+          ->getQuery()
+          ->getOneOrNullResult();
     }
 }
