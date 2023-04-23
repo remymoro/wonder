@@ -14,31 +14,31 @@ class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-          ->add('email', null, ['label' => '*Email'])
-          ->add('firstname', null, ['label' => '*Prénom'])
-          ->add('lastname', null, ['label' => '*Nom'])
-          ->add('pictureFile', FileType::class, [
-            'label' => '*Image',
-            'mapped' => false,
-            'constraints' => [
-              new Image(
-                  [
+        $user = $builder->getData();
 
-                  'mimeTypesMessage' => 'Veuillez soumettre une image',
-                  'maxSize' => '1M',
-                  'maxSizeMessage' => 'Votre image fait {{ size }} {{ suffix }}. La limite est de {{ limit }} {{ suffix }}'
-            ]
-              )
-            ]
-          ])
-          ->add('password', PasswordType::class, ['label' => '*Mot de passe']);
+        $builder
+            ->add('email', null, ['label' => '*Email'])
+            ->add('firstname', null, ['label' => '*Prénom'])
+            ->add('lastname', null, ['label' => '*Nom'])
+            ->add('pictureFile', FileType::class, [
+                'label' => '*Image',
+                'required' => $user?->getPicture() ? false : true,
+                'mapped' => false,
+                'constraints' => [
+                    new Image([
+                        'mimeTypesMessage' => 'Veuillez soumettre une image',
+                        'maxSize' => '1M',
+                        'maxSizeMessage' => 'Votre image fait {{ size }} {{ suffix }}. La limite est de {{ limit }} {{ suffix }}'
+                    ])
+                ]
+            ])
+            ->add('password', PasswordType::class, ['label' => '*Mot de passe']);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-          'data_class' => User::class,
+            'data_class' => User::class,
         ]);
     }
 }
