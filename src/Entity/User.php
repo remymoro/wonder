@@ -45,8 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $lastname = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Url(message: 'Veuillez renseigner une url.')]
-    #[Assert\NotBlank(message: 'Veuillez renseigner une image de profil.')]
+    
     private ?string $picture = null;
 
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Question::class, orphanRemoval: true)]
