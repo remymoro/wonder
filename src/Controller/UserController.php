@@ -4,13 +4,14 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Service\Uploader;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
@@ -36,7 +37,8 @@ class UserController extends AbstractController
     public function currentUserProfile(
         Request $request,
         EntityManagerInterface $em,
-        UserPasswordHasherInterface $userPasswordHasher
+        UserPasswordHasherInterface $userPasswordHasher,
+        Uploader $uploader
     ): Response {
 
 
@@ -55,6 +57,10 @@ class UserController extends AbstractController
             if($newPassword) {
                 $hash = $userPasswordHasher->hashPassword($user, $newPassword);
                 $user->setPassword($hash);
+            }
+            $picture = $userForm->get('pictureFile')->getData();
+            if ($picture) {
+              $user->setPicture($uploader->uploadProfileImage($picture, $user->getPicture()));
             }
 
             $em->flush();

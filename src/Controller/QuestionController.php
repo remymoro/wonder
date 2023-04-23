@@ -131,7 +131,16 @@ class QuestionController extends AbstractController
     }
 
 
-
+    #[Route('/question/search/{search}', name: 'question_search', priority: 1)]
+    public function questionSearch(QuestionRepository $questionRepository, string $search = "none")
+    {
+        if ($search === "none") {
+            $questions = [];
+        } else {
+            $questions = $questionRepository->findBySearch($search);
+        }
+        return $this->json(json_encode($questions));
+    }
 
 
 
@@ -181,4 +190,6 @@ class QuestionController extends AbstractController
 
     }
 
+
+    
 }

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Service\Uploader;
 use App\Entity\ResetPassword;
 use App\Repository\UserRepository;
 use App\Security\LoginFormAuthenticator;
@@ -15,13 +16,13 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 class SecurityController extends AbstractController
@@ -40,18 +41,15 @@ class SecurityController extends AbstractController
         Request $request,
         EntityManagerInterface $em,
         UserPasswordHasherInterface $passwordHasher,
-        MailerInterface $mailer
+        MailerInterface $mailer,
+        Uploader $uploader
     ) {
         $user = new User();
         $userForm = $this->createForm(UserType::class, $user);
         $userForm->handleRequest($request);
         if ($userForm->isSubmitted() && $userForm->isValid()) {
             $picture = $userForm->get('pictureFile')->getData();
-            $folder = $this->getParameter('profile.folder');
-            $ext = $picture->guessExtension() ?? 'bin';
-            $filename = bin2hex(random_bytes(10)) .'.'. $ext;
-            $picture->move($folder,$filename);
-            $user->setPicture($this->getParameter('profile.folder.public_path') . '/' . $filename);
+            $user->setPicture($uploader->uploadProfileImage($picture));
             $hash = $passwordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($hash);
             $em->persist($user);

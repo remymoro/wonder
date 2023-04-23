@@ -23,4 +23,8 @@ services:
             - '../src/Kernel.php'
 
 
+    App\Service\Uploader:
+        arguments:
+            $profileFolder: '%profile.folder%'
+            $profileFolderPublic: '%profile.folder.public_path%'
    
