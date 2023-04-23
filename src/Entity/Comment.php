@@ -43,7 +43,6 @@ class Comment
 
     public function __construct()
     {
-        $this->createdAt = new DateTimeImmutable();
         $this->votes = new ArrayCollection();
     }
 

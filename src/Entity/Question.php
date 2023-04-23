@@ -49,7 +49,6 @@ class Question
 
     function __construct()
     {
-         $this->createdAt = new \DateTimeImmutable();
          $this->comments = new ArrayCollection();
          $this->votes = new ArrayCollection();
         

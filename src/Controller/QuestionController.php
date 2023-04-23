@@ -31,6 +31,7 @@ class QuestionController extends AbstractController
         $formQuestion->handleRequest($request);
 
         if($formQuestion->isSubmitted() && $formQuestion->isValid()) {
+            $question->setCreatedAt(new \DateTimeImmutable());
             $question->setRating(0);
             $question->setAuthor($user);
             $question->setNbrOfResponse(0);
@@ -63,6 +64,7 @@ class QuestionController extends AbstractController
             $commentForm->handleRequest($request);
 
             if($commentForm->isSubmitted() && $commentForm->isValid()) {
+                $comment->setCreatedAt(new \DateTimeImmutable());
                 $comment->setRating(0);
                 $comment->setQuestion($question);
                 $comment->setAuthor($user);
