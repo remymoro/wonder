@@ -22,13 +22,14 @@ Projet réalisé dans le cadre du parcours **Symfony** de la plateforme de forma
 >
 > Les utilisateurs s'inscrivent avec une photo de profil, posent des questions, y répondent
 > et votent (pour / contre) sur les questions comme sur les réponses. Une barre de recherche
-> instantanée en **Vue 3** interroge l'API interne en temps réel, et un back-office
-> **EasyAdmin** permet de gérer les membres, les rôles et la modération des commentaires.
+> instantanée en **Vue 3** interroge l'API interne en temps réel.
 >
 > J'y ai implémenté l'authentification complète (authenticator personnalisé, *remember me*,
 > limitation des tentatives de connexion), la réinitialisation de mot de passe par email avec
 > token à durée de vie limitée, l'upload d'images, ainsi que des requêtes Doctrine optimisées
-> pour éviter le problème des requêtes N+1.
+> pour éviter le problème des requêtes N+1. **Au-delà du programme de la formation**, j'ai
+> ajouté de ma propre initiative un back-office d'administration avec **EasyAdmin** : gestion
+> des membres, attribution des rôles et modération des commentaires.
 
 ---
 
@@ -63,8 +64,9 @@ de votes. L'ensemble est administrable depuis un back-office dédié.
   un endpoint JSON Symfony et affiche les suggestions au fil de la frappe.
 - **Profils** — page publique par utilisateur et page d'édition de son propre profil
   (changement de photo, changement de mot de passe).
-- **Back-office EasyAdmin** — tableau de bord, CRUD des utilisateurs (avec attribution des rôles
-  et gestion des avatars) et modération des commentaires.
+- **Back-office EasyAdmin** *(ajout personnel, hors programme de la formation)* — tableau de bord,
+  CRUD des utilisateurs avec attribution des rôles et gestion des avatars, modération des
+  commentaires, et restriction de la zone `/admin` aux administrateurs.
 - **Interface responsive** — intégration maison en SCSS, menu burger, sidebar, messages flash.
 
 #### Stack technique
@@ -93,6 +95,9 @@ de votes. L'ensemble est administrable depuis un back-office dédié.
   d'images : nom de fichier aléatoire, détection d'extension et suppression de l'ancienne image.
 - **Environnement conteneurisé** — PostgreSQL et Mailcatcher lancés via Docker Compose, ce qui
   permet de tester l'envoi réel des emails en local.
+- **Intégration d'un bundle hors formation** — EasyAdmin n'était pas couvert par le cours :
+  je l'ai installé et configuré à partir de la documentation officielle (dashboard, contrôleurs
+  CRUD, champs typés, upload d'images) pour doter le projet d'une vraie interface d'administration.
 
 #### Ce que ce projet m'a apporté
 
@@ -102,6 +107,11 @@ le fonctionnement du composant Security, et la façon dont Doctrine traduit un m
 requêtes SQL — avec l'impact concret que cela a sur les performances. Côté front, j'ai structuré
 mes styles en SCSS et introduit Vue 3 uniquement là où l'interactivité le justifiait, plutôt que
 de transformer toute l'application en SPA.
+
+Le back-office est l'exemple le plus parlant de cette progression : EasyAdmin ne faisait pas
+partie du cours, je suis parti de la documentation officielle pour l'intégrer au projet. C'est
+là que j'ai vérifié que j'étais capable d'ajouter une brique à un projet Symfony sans tutoriel
+pour me guider.
 
 #### Suites envisagées
 
@@ -123,7 +133,7 @@ réinitialisation de mot de passe.
 > **Wonder — Community Q&A platform**
 > Full-stack web application where users ask questions, post answers and upvote the best
 > content. Features custom authentication, email-based password reset, image uploads, a live
-> search bar and an admin back-office.
+> search bar, plus an admin back-office I added on my own initiative, beyond the course syllabus.
 > Built with Symfony 6.2, Doctrine, PostgreSQL, Twig, TypeScript and Vue 3.
 > Training project — Symfony track, Dyma.
 
